@@ -5,37 +5,48 @@
  */
 'use strict';
 
-var React = require('react-native');
+var React = require('react-native'),
+    _ = require('lodash'),
+    App = require('./js/components/App');
+
 var {
   AppRegistry,
-  StyleSheet,
-  Text,
-  View,
+  Navigator,
 } = React;
 
 var Registration = React.createClass({
   render: function() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcomeTheBitches}>
-          I'm here bitches!
-        </Text>
-      </View>
-    );
-  }
-});
+      <Navigator
+          initialRoute={{
+            title: 'App',
+            component: App,
+          }}
 
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcomeTheBitches: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+          configureScene={(route) => {
+            if (route.sceneConfig) {
+              return route.sceneConfig;
+            }
+            return Navigator.SceneConfigs.FloatFromBottom;
+          }}
+
+          renderScene={(route, navigator) => {
+            if (route.component) {
+              return React.createElement(route.component, { navigator: _.omit(navigator, 'route'), ...route });
+            }
+          }}
+
+          onItemRef={(ref, index, route) => {
+            route.sceneRef = ref;
+          }}
+
+          onDidFocus={(route) => {
+            if(route.sceneRef.componentDidFocus) {
+              route.sceneRef.componentDidFocus();
+            }
+          }}
+      />
+    );
   }
 });
 
