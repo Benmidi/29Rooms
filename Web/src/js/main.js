@@ -13,6 +13,7 @@ var Login = require('./components/auth/app-login');
 var About = require('./components/about/app-about');
 var Dashboard = require('./components/dashboard/app-dashboard');
 var Homepage = require('./components/homepage/homepage');
+var User = require('./components/user/user');
 
 
 var routes = (
@@ -22,6 +23,7 @@ var routes = (
     <Route name="about" handler={About}/>
     <Route name="dashboard" handler={Dashboard}/>
     <Route name="home" handler={Homepage}/>
+    <Route name="user/:userID" handler={User}/>
   </Route>
 );
 

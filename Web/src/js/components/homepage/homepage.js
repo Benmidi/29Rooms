@@ -7,6 +7,9 @@ var Homepage = React.createClass({
     return (
       <div>
         <h1>Homepage</h1>
+        <h1>29 Rooms Main Page</h1>
+        <hr/>
+        <p> Please go to 29rooms.com/USERID to see your videos</p>
       </div>
     );
   }
