@@ -26,11 +26,10 @@ var Header = React.createClass({
       <Link to="login">Sign in</Link>;
     return (
       <div>
-        <h1 className="breadcrumbs"><a href="http://www.github.com/przeor/react-router-flux-starter-kit">React Router Flux Starter Kit</a> / przeor Auth Flow with Well Orginized Flux Architecture </h1>
+        <h1 className="breadcrumbs">This will be the header</h1>
         <ul className="nav nav-tabs">
           <li>{loginOrOut}</li>
           <li><Link to="about">About</Link></li>
-          <li><Link to="dashboard">Schedule Dashboard</Link></li>
         </ul>
         <br/>
       </div>
