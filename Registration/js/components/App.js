@@ -4,6 +4,7 @@ var RegistrationActions = require('../actions/RegistrationActions'),
     UserStore = require('../stores/UserStore'),
     Scan = require('./Scan'),
     Name = require('./Name'),
+    Done = require('./Done'),
     React = require('react-native'),
     _ = require('lodash');
 
@@ -43,10 +44,14 @@ var RegistrationApp = React.createClass({
   render: function() {
     var component;
 
-    if (this.state.user.id) {
-      component = <Name {...this.state} />;
+    console.log('THIS.STATE APP', this.state);
+
+    if (!this.state.user.id) {
+      component = <Scan />;
+    } else if (this.state.user.id && !this.state.user.name){
+    	component = <Name {...this.state} />;
     } else {
-    	component = <Scan />;
+    	component = <Done {...this.state} />;
     }
 
     return(

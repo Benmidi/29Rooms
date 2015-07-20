@@ -9,7 +9,6 @@ var {
   View,
   StyleSheet,
   Text,
-  TextInput,
   TouchableHighlight,
 } = React;
 
@@ -22,59 +21,53 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     height: RegistrationConstants.HEIGHT,
   },
-  prompt: {
+  thankyou: {
   	color: 'white',
-    fontSize: 30
+    fontSize: 30,
   },
-  name: {
-    height: 40,
-    borderColor: 'black',
-    borderWidth: 1
+  instructions: {
+    color: 'white',
+    fontSize: 20,
   },
-  submit: {
-    height: 100,
+  doneContainer: {
+    height: 60,
+    flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  submitText: {
-    fontSize: 30,
+  doneText: {
     color: '#363380',
+    fontSize: 30,
   },
 });
 
-var Name = React.createClass({
+var Done = React.createClass({
 
   getInitialState: function() {
     return {
     };
   },
 
-  _watchName: function(text){
-    this.setState({
-      name: text
-    })
-  },
-
-  _submit: function(){
-    //TODO: check if name is acceptable
-    //TODO: if so, send all user data at once to Parse
-    RegistrationActions.userSubmitName(this.state.name);
+  _restart: function(){
+    RegistrationActions.clearUser();
   },
 
   render: function() {
+    console.log('this.props', this.props);
     return(
       <View style={styles.container}>
-        <Text style={styles.prompt}>Please enter your name:</Text>
-        <TextInput onChangeText={this._watchName} style={styles.name}>{this.state.name}</TextInput>
+      	<Text style={styles.thankyou}>Thanks {this.props.user.name}</Text>
+        <Text style={styles.instructions}>Go to the rooms, yo.</Text>
         
-        <TouchableHighlight onPress={this._submit} style={styles.submit}>
-          <Text style={styles.submitText}>Submit</Text>
+        <TouchableHighlight onPress={this._restart}>
+          <View style={styles.doneContainer}>
+            <Text style={styles.doneText}>Done</Text>
+          </View>
         </TouchableHighlight>
-
       </View>
     );
   }
 });
 
-module.exports = Name;
+module.exports = Done;

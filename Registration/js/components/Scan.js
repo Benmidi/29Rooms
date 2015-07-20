@@ -14,7 +14,7 @@ var {
 
 var styles = StyleSheet.create({
   camera: {
-    flex: 1,
+  	flex: 1,
     top: 0,
     left: 0,
     right: 0,
@@ -24,8 +24,17 @@ var styles = StyleSheet.create({
     backgroundColor: 'transparent',
     height: RegistrationConstants.HEIGHT - 100
   },
+  promptContainer: {
+  	flex: 1,
+    backgroundColor: '#363380',
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 100,
+  },
   prompt: {
-  	color: 'black'
+  	color: 'white',
+  	fontSize: 30,
   }
 });
 
@@ -36,7 +45,7 @@ var Scan = React.createClass({
 
 		if(e.type === 'org.iso.QRCode'){
 			userId = e.data.split("/").pop();
-			console.log('userId', userId);
+			//TODO: check if userId already exists
 			RegistrationActions.userCreateAccount(userId);
 		} else {
 			console.log('ERROR');
@@ -53,7 +62,9 @@ var Scan = React.createClass({
       		onBarCodeRead={_.once(this._onBarCodeRead)}
       		type={Camera.constants.Type.front}
      		/>
-      	<Text style={styles.prompt}>Scan your room key</Text>
+     		<View style={styles.promptContainer}>
+      		<Text style={styles.prompt}>Scan your room key</Text>
+      	</View>
       </View>
     );
   }

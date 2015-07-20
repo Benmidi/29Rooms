@@ -47,6 +47,14 @@ AppDispatcher.register(function(action) {
       handleCreateAccount(action.userId);
       UserStore.emitChange();
       break;
+    case RegistrationConstants.ActionTypes.USER_SUBMIT_NAME:
+      handleSubmitName(action.userName);
+      UserStore.emitChange();
+      break;
+    case RegistrationConstants.ActionTypes.CLEAR_USER:
+      handleClearUser();
+      UserStore.emitChange();
+      break;
 
     default:
       // no op
@@ -55,6 +63,14 @@ AppDispatcher.register(function(action) {
 
 function handleCreateAccount(id){
   _user.id = id;
+}
+
+function handleSubmitName(name){
+  _user.name = name;
+}
+
+function handleClearUser(){
+  _user = {};
 }
 
 module.exports = UserStore;

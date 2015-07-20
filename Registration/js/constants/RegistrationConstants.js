@@ -14,5 +14,7 @@ module.exports = {
   ActionTypes: keyMirror({
     RECEIVED_RAW_DATA: null,
     USER_CREATE_ACCOUNT: null,
+    USER_SUBMIT_NAME: null,
+    CLEAR_USER: null,
   }),
 };
