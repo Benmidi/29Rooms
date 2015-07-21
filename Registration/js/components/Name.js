@@ -24,21 +24,31 @@ var styles = StyleSheet.create({
   },
   prompt: {
   	color: 'white',
-    fontSize: 30
+    fontSize: 30,
+    alignSelf: 'center',
   },
   name: {
     height: 40,
-    borderColor: 'black',
-    borderWidth: 1
+    borderRadius: 20,
+    width: (RegistrationConstants.WIDTH / 4) * 3,
+    marginLeft: (RegistrationConstants.WIDTH / 8),
+    marginTop: 20,
+    marginBottom: 20,
+    borderColor: 'white',
+    borderWidth: 1,
+    padding: 10,
+    color: 'white',
   },
-  submit: {
-    height: 100,
+  submitButton: {
+    height: 40,
+    borderRadius: 20,
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 10,
   },
   submitText: {
-    fontSize: 30,
+    fontSize: 20,
     color: '#363380',
   },
 });
@@ -47,6 +57,7 @@ var Name = React.createClass({
 
   getInitialState: function() {
     return {
+      ready: true,
     };
   },
 
@@ -66,9 +77,9 @@ var Name = React.createClass({
     return(
       <View style={styles.container}>
         <Text style={styles.prompt}>Please enter your name:</Text>
-        <TextInput onChangeText={this._watchName} style={styles.name}>{this.state.name}</TextInput>
+        <TextInput onChangeText={this._watchName} style={styles.name} />
         
-        <TouchableHighlight onPress={this._submit} style={styles.submit}>
+        <TouchableHighlight onPress={this._submit} style={styles.submitButton}>
           <Text style={styles.submitText}>Submit</Text>
         </TouchableHighlight>
 

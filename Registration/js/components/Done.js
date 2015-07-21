@@ -22,23 +22,27 @@ var styles = StyleSheet.create({
     height: RegistrationConstants.HEIGHT,
   },
   thankyou: {
-  	color: 'white',
+    color: 'white',
     fontSize: 30,
+    alignSelf: 'center',
   },
   instructions: {
     color: 'white',
     fontSize: 20,
+    marginTop: 20,
+    marginBottom: 20,
   },
-  doneContainer: {
-    height: 60,
-    flex: 1,
+  submitButton: {
+    height: 40,
+    borderRadius: 20,
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 10,
   },
-  doneText: {
+  submitText: {
+    fontSize: 20,
     color: '#363380',
-    fontSize: 30,
   },
 });
 
@@ -61,8 +65,8 @@ var Done = React.createClass({
         <Text style={styles.instructions}>Go to the rooms, yo.</Text>
         
         <TouchableHighlight onPress={this._restart}>
-          <View style={styles.doneContainer}>
-            <Text style={styles.doneText}>Done</Text>
+          <View style={styles.submitButton}>
+            <Text style={styles.submitText}>Done</Text>
           </View>
         </TouchableHighlight>
       </View>

@@ -22,7 +22,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    height: RegistrationConstants.HEIGHT - 100
+    height: RegistrationConstants.HEIGHT,
   },
   promptContainer: {
   	flex: 1,
@@ -30,7 +30,21 @@ var styles = StyleSheet.create({
     alignSelf: 'stretch',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 100,
+		opacity: 0.7,
+		position: 'absolute',
+		top: 0, 
+		left: 0, 
+		right: 0, 
+		bottom: 0
+  },
+  box: {
+  	width: (RegistrationConstants.WIDTH / 4) * 3,
+  	marginTop: 100,
+  	marginBottom: 40,
+    height: 400,
+    borderRadius: 60,
+    borderColor: 'white',
+    borderWidth: 1,
   },
   prompt: {
   	color: 'white',
@@ -63,6 +77,7 @@ var Scan = React.createClass({
       		type={Camera.constants.Type.front}
      		/>
      		<View style={styles.promptContainer}>
+     			<View style={styles.box}></View>
       		<Text style={styles.prompt}>Scan your room key</Text>
       	</View>
       </View>

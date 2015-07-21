@@ -44,8 +44,6 @@ var RegistrationApp = React.createClass({
   render: function() {
     var component;
 
-    console.log('THIS.STATE APP', this.state);
-
     if (!this.state.user.id) {
       component = <Scan />;
     } else if (this.state.user.id && !this.state.user.name){
