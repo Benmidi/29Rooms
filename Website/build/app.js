@@ -341,7 +341,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var React = _interopRequire(require("react"));
 
-var Hello = _interopRequire(require("./components/hello.jsx"));
+var User = _interopRequire(require("./components/User.jsx"));
 
 var UserStore = _interopRequire(require("./stores/UserStore"));
 
@@ -386,7 +386,7 @@ var App = React.createClass({
         "Loading"
       );
     } else {
-      component = React.createElement(Hello, _extends({ onClick: this.handleClick }, this.state));
+      component = React.createElement(User, _extends({ onClick: this.handleClick }, this.state));
     }
     return React.createElement(
       "div",
@@ -399,34 +399,47 @@ var App = React.createClass({
 React.render(React.createElement(App, null), document.getElementById("app"));
 
 
-},{"./actions/AppActions":4,"./components/hello.jsx":6,"./stores/UserStore":9,"react":160}],6:[function(require,module,exports){
+},{"./actions/AppActions":4,"./components/User.jsx":6,"./stores/UserStore":9,"react":160}],6:[function(require,module,exports){
 "use strict";
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
 var React = _interopRequire(require("react"));
 
-var HelloWorld = React.createClass({
-  displayName: "HelloWorld",
+var User = React.createClass({
+  displayName: "User",
 
   render: function render() {
+    console.log("in user render");
     console.log(this.props);
     return React.createElement(
       "div",
       null,
       React.createElement(
         "h1",
-        { onClick: this.props.onClick },
-        "Hello World"
+        null,
+        "User ID: ",
+        this.props.user.id,
+        " "
       ),
       this.props.user.assets.map(function (d) {
-        return React.createElement("image", { key: d._name, src: d._url });
+        return React.createElement(
+          "li",
+          null,
+          React.createElement(
+            "h3",
+            null,
+            "CHECKPOINT ",
+            d.attributes.checkpoint
+          ),
+          React.createElement("img", { src: d.attributes.asset._url })
+        );
       })
     );
   }
 });
 
-module.exports = HelloWorld;
+module.exports = User;
 
 
 },{"react":160}],7:[function(require,module,exports){
@@ -461,7 +474,9 @@ var Parse = require("parse").Parse;
 
 var CHANGE_EVENT = "change";
 
-var _user = { assets: [], loading: true };
+var user_id = parsePathname();
+
+var _user = { id: user_id, assets: [], loading: true };
 
 var UserStore = _.extend({}, EventEmitter.prototype, {
   /**
@@ -514,7 +529,7 @@ function handleFetchUserAssets() {
 
   gifList = Parse.Object.extend("Assets");
   query = new Parse.Query(gifList);
-  query.equalTo("account_id", document.location.pathname.split("/").pop());
+  query.equalTo("account_id", user_id).ascending("createdAt");
 
   query.find({
     success: function success(results) {
@@ -523,7 +538,7 @@ function handleFetchUserAssets() {
       for (var i = 0; i < results.length; i++) {
         var object = results[i];
         console.log(object.id, " - ", object.get("asset"));
-        assets.push(object.get("asset"));
+        assets.push(object);
       }
       _.extend(_user, { assets: assets, loading: false });
       UserStore.emitChange();
@@ -552,7 +567,9 @@ function initParse() {
   Parse.initialize("XR6QEwB3uUOhxCCT1jGigHQc9YO1vQHceRjrwAgN", "oGY2hPgTLoJJACeuV3CJTihOMDlmE04UCUqq0ABb");
 }
 
-function parsePathname() {}
+function parsePathname() {
+  return document.location.pathname.split("/").pop();
+}
 
 module.exports = UserStore;
 

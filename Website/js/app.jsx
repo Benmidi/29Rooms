@@ -1,5 +1,5 @@
 import React from 'react';
-import Hello from './components/hello.jsx';
+import User from './components/User.jsx';
 import UserStore from './stores/UserStore';
 import AppActions from './actions/AppActions';
 
@@ -39,7 +39,7 @@ var App = React.createClass({
     if (this.state.user.loading) {
       component = <div>Loading</div>;
     } else {
-      component = <Hello onClick={this.handleClick} {...this.state}></Hello>;
+      component = <User onClick={this.handleClick} {...this.state}></User>;
     }
     return (
       <div>{component}</div>

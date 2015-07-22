@@ -8,7 +8,9 @@ var AppDispatcher = require('../dispatcher/AppDispatcher'),
 
 var CHANGE_EVENT = 'change';
 
-var _user = { assets: [], loading: true};
+var user_id = parsePathname();
+
+var _user = { id: user_id, assets: [], loading: true};
 
 var UserStore = _.extend({}, EventEmitter.prototype, {
   /**
@@ -62,7 +64,7 @@ function handleFetchUserAssets(){
 
   gifList = Parse.Object.extend("Assets");
   query = new Parse.Query(gifList);
-  query.equalTo("account_id", document.location.pathname.split('/').pop());
+  query.equalTo("account_id", user_id).ascending('createdAt');
 
   query.find({
     success: function(results) {
@@ -71,7 +73,7 @@ function handleFetchUserAssets(){
       for (var i = 0; i < results.length; i++) {
         var object = results[i];
         console.log(object.id, ' - ', object.get('asset'));
-        assets.push(object.get('asset'));
+        assets.push(object);
       }
       _.extend(_user, {assets: assets, loading: false});
       UserStore.emitChange();
@@ -91,7 +93,7 @@ function initParse() {
 }
 
 function parsePathname() {
-
+  return document.location.pathname.split('/').pop();
 }
 
 module.exports = UserStore;
