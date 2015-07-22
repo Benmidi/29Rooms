@@ -6,8 +6,8 @@ var HelloWorld = React.createClass({
     return (
       <div>
       <h1 onClick={this.props.onClick}>Hello World</h1>
-      {this.props.assets.map(function(d){
-        return <image src={d._url} />;
+      {this.props.user.assets.map(function(d){
+        return <image key={d._name} src={d._url} />;
       })}
       </div>
     );
