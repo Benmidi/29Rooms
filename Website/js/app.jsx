@@ -29,17 +29,13 @@ var App = React.createClass({
     });
   },
 
-  handleClick: function () {
-    window.alert('clicked');
-  },
-
   render: function () {
     var component;
 
     if (this.state.user.loading) {
       component = <div>Loading</div>;
     } else {
-      component = <User onClick={this.handleClick} {...this.state}></User>;
+      component = <User {...this.state}></User>;
     }
     return (
       <div>{component}</div>

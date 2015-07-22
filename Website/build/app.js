@@ -337,8 +337,6 @@ module.exports = AppActions;
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var React = _interopRequire(require("react"));
 
 var User = _interopRequire(require("./components/User.jsx"));
@@ -372,10 +370,6 @@ var App = React.createClass({
       user: UserStore.get() });
   },
 
-  handleClick: function handleClick() {
-    window.alert("clicked");
-  },
-
   render: function render() {
     var component;
 
@@ -386,7 +380,7 @@ var App = React.createClass({
         "Loading"
       );
     } else {
-      component = React.createElement(User, _extends({ onClick: this.handleClick }, this.state));
+      component = React.createElement(User, this.state);
     }
     return React.createElement(
       "div",
@@ -412,29 +406,45 @@ var User = React.createClass({
   render: function render() {
     console.log("in user render");
     console.log(this.props);
+
+    if (this.props.user.assets.length > 0) {
+      var component = React.createElement(
+        "div",
+        null,
+        React.createElement(
+          "h1",
+          null,
+          "User ID: ",
+          this.props.user.id
+        ),
+        this.props.user.assets.map(function (d) {
+          return React.createElement(
+            "li",
+            null,
+            React.createElement(
+              "h3",
+              null,
+              "CHECKPOINT ",
+              d.attributes.checkpoint
+            ),
+            React.createElement("img", { src: d.attributes.asset._url })
+          );
+        })
+      );
+    } else {
+      var component = React.createElement(
+        "h1",
+        null,
+        "There are no videos registered for user ",
+        this.props.user.id,
+        ". Go make some!"
+      );
+    }
+
     return React.createElement(
       "div",
       null,
-      React.createElement(
-        "h1",
-        null,
-        "User ID: ",
-        this.props.user.id,
-        " "
-      ),
-      this.props.user.assets.map(function (d) {
-        return React.createElement(
-          "li",
-          null,
-          React.createElement(
-            "h3",
-            null,
-            "CHECKPOINT ",
-            d.attributes.checkpoint
-          ),
-          React.createElement("img", { src: d.attributes.asset._url })
-        );
-      })
+      component
     );
   }
 });
