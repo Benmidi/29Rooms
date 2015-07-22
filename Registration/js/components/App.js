@@ -3,6 +3,7 @@
 var RegistrationActions = require('../actions/RegistrationActions'),
     UserStore = require('../stores/UserStore'),
     Scan = require('./Scan'),
+    Fail = require('./Fail'),
     Name = require('./Name'),
     Done = require('./Done'),
     React = require('react-native'),
@@ -23,6 +24,7 @@ var RegistrationApp = React.createClass({
 	getInitialState: function() {
 		return {
 			ready: true,
+			firstPass: true,
 			user: UserStore.get(),
 		};
 	},
@@ -44,9 +46,12 @@ var RegistrationApp = React.createClass({
   render: function() {
     var component;
 
-    if (!this.state.user.id) {
+    if (this.state.user.firstPass) {
+    	//TODO: call this less
       component = <Scan />;
-    } else if (this.state.user.id && !this.state.user.name){
+    } else if(!this.state.user.firstPass && this.state.user.isRegistered) {
+    	component = <Fail {...this.state} />;
+    } else if ((!this.state.user.firstPass && !this.state.user.isRegistered) && (!this.state.user.name)) {
     	component = <Name {...this.state} />;
     } else {
     	component = <Done {...this.state} />;

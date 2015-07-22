@@ -69,7 +69,6 @@ var Name = React.createClass({
 
   _submit: function(){
     //TODO: check if name is acceptable
-    //TODO: if so, send all user data at once to Parse
     RegistrationActions.userSubmitName(this.state.name);
   },
 
@@ -82,7 +81,6 @@ var Name = React.createClass({
         <TouchableHighlight onPress={this._submit} style={styles.submitButton}>
           <Text style={styles.submitText}>Submit</Text>
         </TouchableHighlight>
-
       </View>
     );
   }

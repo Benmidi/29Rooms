@@ -4,10 +4,10 @@ var AppDispatcher = require('../dispatcher/AppDispatcher'),
     RegistrationConstants = require('../constants/RegistrationConstants');
 
 var RegistrationActions = {
-  receiveRawData: function(data) {
+  checkUserId: function(userId){
     AppDispatcher.dispatch({
-      actionType: RegistrationConstants.ActionTypes.RECEIVED_RAW_DATA,
-      data: data,
+      actionType: RegistrationConstants.ActionTypes.CHECK_USER_ID,
+      userId: userId,
     });
   },
   userCreateAccount: function(userId){

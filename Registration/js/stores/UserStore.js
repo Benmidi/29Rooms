@@ -9,7 +9,9 @@ var AppDispatcher = require('../dispatcher/AppDispatcher'),
 
 var CHANGE_EVENT = 'change';
 
-var _user = {};
+var _user = {
+  firstPass: true,
+};
 
 var UserStore = _.extend({}, EventEmitter.prototype, {
   /**
@@ -43,6 +45,10 @@ var UserStore = _.extend({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
 
   switch(action.actionType) {
+    case RegistrationConstants.ActionTypes.CHECK_USER_ID:
+      handleCheckUserId(action.userId);
+      UserStore.emitChange();
+      break;
     case RegistrationConstants.ActionTypes.USER_CREATE_ACCOUNT:
       handleCreateAccount(action.userId);
       UserStore.emitChange();
@@ -61,6 +67,30 @@ AppDispatcher.register(function(action) {
   }
 });
 
+function handleCheckUserId(id){
+  var UsersData,
+      query;
+  
+  initParse();
+
+  UsersData = Parse.Object.extend("Users");
+  query = new Parse.Query(UsersData);
+  query.equalTo("account_id", id);
+
+  query.find({
+    success: function(users) {
+      if(users.length >= 1){
+        isRegistered(true);
+      } else {
+        isRegistered(false);
+      }
+    },
+    error: function(data){
+      console.log('ERROR: ', data);
+    }
+  });
+}
+
 function handleCreateAccount(id){
   _user.id = id;
 }
@@ -70,34 +100,31 @@ function handleSubmitName(name){
 }
 
 function handleClearUser(){
+  var UsersData,
+      NewUser;
 
+  initParse();
+
+  UsersData = Parse.Object.extend("Users");
+
+  NewUser = new UsersData();
+  NewUser.set("Name", _user.name); 
+  NewUser.set("account_id", _user.id);
+  NewUser.save();
+
+  _user = {
+    firstPass: true,
+  };
+}
+
+//UTILS
+function isRegistered(bool){
+  _user.isRegistered = bool;
+  _user.firstPass = false;
+}
+
+function initParse(){
   Parse.initialize("XR6QEwB3uUOhxCCT1jGigHQc9YO1vQHceRjrwAgN", "oGY2hPgTLoJJACeuV3CJTihOMDlmE04UCUqq0ABb");
-
-  var UsersData = Parse.Object.extend("Users");
-  var query = new Parse.Query(UsersData);
-  query.equalTo("account_id", _user.id);
-
-  var userName = _user.name;
-  var userId = _user.id;
-
-  query.find({
-    success: function(users) {
-      if(users.length >= 1){
-        console.log('ERROR: This user is already registered');
-        //TODO: go to fail whale
-      } else {
-        var NewUser = new UsersData();
-        NewUser.set("Name", userName); 
-        NewUser.set("account_id", userId);
-        NewUser.save();
-      }
-    },
-    error: function(data){
-      console.log('ERROR: ', data);
-    }
-  });
-
-  _user = {};
 }
 
 module.exports = UserStore;

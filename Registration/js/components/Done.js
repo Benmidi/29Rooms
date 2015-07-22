@@ -50,6 +50,7 @@ var Done = React.createClass({
 
   getInitialState: function() {
     return {
+      ready: true,
     };
   },
 
@@ -58,7 +59,6 @@ var Done = React.createClass({
   },
 
   render: function() {
-    console.log('this.props', this.props);
     return(
       <View style={styles.container}>
       	<Text style={styles.thankyou}>Thanks {this.props.user.name}</Text>
