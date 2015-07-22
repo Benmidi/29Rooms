@@ -1,5 +1,6 @@
 module.exports = function (grunt) {
   require('time-grunt')(grunt);
+  require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -29,15 +30,19 @@ module.exports = function (grunt) {
         options: {
           hostname: 'localhost',
           port: 7012,
-          open: true
+          open: true,
+          middleware: function(connect, options, middlewares) {
+            var modRewrite = require('connect-modrewrite');
+
+            // enable Angular's HTML5 mode
+            middlewares.unshift(modRewrite(['!\\.html|\\.js|\\.svg|\\.css|\\.png$ /index.html [L]']));
+
+            return middlewares;
+          }
         }
       }
     }
   });
-
-  grunt.loadNpmTasks('grunt-browserify');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-connect');
 
   grunt.registerTask('start:dev', ['browserify', 'connect', 'watch']);
 

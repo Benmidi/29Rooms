@@ -4,11 +4,14 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "connect-modrewrite": "^0.8.1",
+    "parse": "^1.5.0",
     "react": "^0.12.2"
   },
   "devDependencies": {
     "babelify": "^5.0.3",
     "browserify": "^6.0.3",
+    "connect-modrewrite": "^0.8.1",
     "envify": "^3.2.0",
     "grunt": "^0.4.5",
     "grunt-browserify": "^3.0.1",
@@ -17,6 +20,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-react": "^0.10.0",
     "grunt-shell": "^1.1.1",
+    "load-grunt-tasks": "^3.2.0",
     "reactify": "^1.0.0",
     "time-grunt": "^1.0.0"
   },
