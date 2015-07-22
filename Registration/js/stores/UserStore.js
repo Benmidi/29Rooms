@@ -53,12 +53,12 @@ AppDispatcher.register(function(action) {
       handleCreateAccount(action.userId);
       UserStore.emitChange();
       break;
-    case RegistrationConstants.ActionTypes.USER_SUBMIT_NAME:
-      handleSubmitName(action.userName);
+    case RegistrationConstants.ActionTypes.CLEAR_USER:
+      handleclearUserAccount(action.bool);
       UserStore.emitChange();
       break;
-    case RegistrationConstants.ActionTypes.CLEAR_USER:
-      handleClearUser();
+    case RegistrationConstants.ActionTypes.SAVE_USER:
+      handleSaveUser(action.userName);
       UserStore.emitChange();
       break;
 
@@ -67,7 +67,7 @@ AppDispatcher.register(function(action) {
   }
 });
 
-function handleCheckUserId(id){
+function handleCheckUserId(id) {
   var UsersData,
       query;
   
@@ -81,27 +81,35 @@ function handleCheckUserId(id){
     success: function(users) {
       if(users.length >= 1){
         isRegistered(true);
+        UserStore.emitChange();
       } else {
         isRegistered(false);
+        UserStore.emitChange();
       }
     },
-    error: function(data){
-      console.log('ERROR: ', data);
+    error: function(model, error) {
+      if(error.code === Parse.Error.CONNECTION_FAILED){
+        _user.errorMessage = 'Connection Error';
+        console.log('ERROR in handleCheckUserId: ', error);
+        UserStore.emitChange();
+      } else {
+        _user.errorMessage = 'There was an error checking the DB for your user ID';
+        console.log('ERROR in handleCheckUserId: ', error);
+        UserStore.emitChange();
+      }
     }
   });
 }
 
-function handleCreateAccount(id){
+function handleCreateAccount(id) {
   _user.id = id;
 }
 
-function handleSubmitName(name){
-  _user.name = name;
-}
-
-function handleClearUser(){
+function handleSaveUser(name) {
   var UsersData,
       NewUser;
+
+  _user.name = name;
 
   initParse();
 
@@ -110,20 +118,35 @@ function handleClearUser(){
   NewUser = new UsersData();
   NewUser.set("Name", _user.name); 
   NewUser.set("account_id", _user.id);
-  NewUser.save();
+  NewUser.save({
+    success: function(data){
+      _user.thanks = true;
+      UserStore.emitChange();
+    },
+    error: function(data){
+      _user.errorMessage = 'Unable to save your account';
+      UserStore.emitChange();
+    }
+  });
+}
 
+function handleclearUserAccount() {
   _user = {
     firstPass: true,
   };
 }
 
-//UTILS
-function isRegistered(bool){
+function isRegistered(bool) {
+  if(bool){
+    _user.errorTitle = "Haven't we met before?";
+    _user.errorMessage = "This barcode has already been registered. Go to the rooms!";
+  }
+
   _user.isRegistered = bool;
   _user.firstPass = false;
 }
 
-function initParse(){
+function initParse() {
   Parse.initialize("XR6QEwB3uUOhxCCT1jGigHQc9YO1vQHceRjrwAgN", "oGY2hPgTLoJJACeuV3CJTihOMDlmE04UCUqq0ABb");
 }
 

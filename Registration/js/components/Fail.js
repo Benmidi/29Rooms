@@ -56,15 +56,18 @@ var Fail = React.createClass({
     };
   },
 
-  _restart: function(){
+  _restart: function() {
     RegistrationActions.clearUser();
   },
 
   render: function() {
+    var errorTitle = this.props.user.errorTitle || "ERROR:";
+    var errorMessage = this.props.user.errorMessage || "Looks like something went wrong, sorry 'bout that";
+
     return(
       <View style={styles.container}>
-        <Text style={styles.title}>Haven't we met before?</Text>
-        <Text style={styles.message}>This barcode has already been registered. Go to the rooms!</Text>
+        <Text style={styles.title}>{errorTitle}</Text>
+        <Text style={styles.message}>{errorMessage}</Text>
 
         <TouchableHighlight onPress={this._restart}>
           <View style={styles.submitButton}>
