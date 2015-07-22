@@ -403,6 +403,7 @@ var React = _interopRequire(require("react"));
 var User = React.createClass({
   displayName: "User",
 
+  parseAssetType: function parseAssetType(assetString) {},
   render: function render() {
     console.log("in user render");
     console.log(this.props);
@@ -418,6 +419,7 @@ var User = React.createClass({
           this.props.user.id
         ),
         this.props.user.assets.map(function (d) {
+
           return React.createElement(
             "li",
             null,
@@ -427,7 +429,7 @@ var User = React.createClass({
               "CHECKPOINT ",
               d.attributes.checkpoint
             ),
-            React.createElement("img", { src: d.attributes.asset._url })
+            React.createElement("video", { src: d.attributes.asset._url, controls: true })
           );
         })
       );
@@ -450,6 +452,8 @@ var User = React.createClass({
 });
 
 module.exports = User;
+
+//come back to this
 
 
 },{"react":160}],7:[function(require,module,exports){

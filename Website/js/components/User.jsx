@@ -1,6 +1,9 @@
 import React from 'react';
 
 var User = React.createClass({
+  parseAssetType: function(assetString) {
+    //come back to this
+  },
   render: function () {
     console.log("in user render");
     console.log(this.props);
@@ -12,7 +15,12 @@ var User = React.createClass({
             User ID: {this.props.user.id} 
           </h1>
           {this.props.user.assets.map(function(d){
-            return <li><h3>CHECKPOINT {d.attributes.checkpoint}</h3><img src={d.attributes.asset._url} /></li>;
+
+
+
+
+
+            return <li><h3>CHECKPOINT {d.attributes.checkpoint}</h3><video src={d.attributes.asset._url} controls></video></li>;
           })}
         </div>
       )
