@@ -60,10 +60,10 @@ var Scan = React.createClass({
     };
   },
 
-	_onBarCodeRead: function(e){
+	_onBarCodeRead: function(e) {
 		var userId;
 
-		if(e.type === 'org.iso.QRCode'){
+		if(e.type === 'org.iso.QRCode') {
 			userId = e.data.split("/").pop();
 			
 			//Check if userId already exists
@@ -72,7 +72,8 @@ var Scan = React.createClass({
 			//Set the ID either way & decide what to do with it in App
 			RegistrationActions.userCreateAccount(userId);
 		} else {
-			console.log('ERROR');
+			_user.error = 'Could not read QRCode';
+			console.log('ERROR: Could not read QRCode');
 		}
 	},
 

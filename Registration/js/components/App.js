@@ -6,8 +6,7 @@ var RegistrationActions = require('../actions/RegistrationActions'),
     Fail = require('./Fail'),
     Name = require('./Name'),
     Done = require('./Done'),
-    React = require('react-native'),
-    _ = require('lodash');
+    React = require('react-native');
 
 var {
   View,
@@ -47,14 +46,17 @@ var RegistrationApp = React.createClass({
     var component;
 
     if (this.state.user.firstPass) {
-    	//TODO: call this less
       component = <Scan />;
-    } else if(!this.state.user.firstPass && this.state.user.isRegistered) {
-    	component = <Fail {...this.state} />;
-    } else if ((!this.state.user.firstPass && !this.state.user.isRegistered) && (!this.state.user.name)) {
+    } else if (!this.state.user.isRegistered && !this.state.user.name) {
     	component = <Name {...this.state} />;
-    } else {
+    } else if (this.state.user.name && !this.state.user.thanks) {
+    	component = <Blank />;
+    } else if (this.state.user.thanks) {
     	component = <Done {...this.state} />;
+    } else if (this.state.user.errorMessage) {
+    	component = <Fail {...this.state} />;
+    } else {
+    	component = <Fail {...this.state} />;
     }
 
     return(

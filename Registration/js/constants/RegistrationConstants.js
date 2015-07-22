@@ -15,6 +15,7 @@ module.exports = {
     CHECK_USER_ID: null,
     USER_CREATE_ACCOUNT: null,
     USER_SUBMIT_NAME: null,
+    SAVE_USER: null,
     CLEAR_USER: null,
   }),
 };

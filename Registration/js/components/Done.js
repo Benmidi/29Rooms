@@ -54,7 +54,7 @@ var Done = React.createClass({
     };
   },
 
-  _restart: function(){
+  _restart: function() {
     RegistrationActions.clearUser();
   },
 
