@@ -403,8 +403,25 @@ var React = _interopRequire(require("react"));
 var User = React.createClass({
   displayName: "User",
 
-  parseAssetType: function parseAssetType(assetString) {},
+  parseAssetType: function parseAssetType(assetString) {
+    var fileExtension = assetString.split(".").pop();
+    switch (fileExtension) {
+      case "MOV":
+        return "video";
+        break;
+      case "jpg":
+      case "png":
+      case "gif":
+        return "image";
+        break;
+      default:
+        console.log("unsupported file type", fileExtension);
+        return "unsupported";
+    }
+  },
+
   render: function render() {
+    var self = this;
     console.log("in user render");
     console.log(this.props);
 
@@ -419,18 +436,48 @@ var User = React.createClass({
           this.props.user.id
         ),
         this.props.user.assets.map(function (d) {
-
-          return React.createElement(
-            "li",
-            null,
-            React.createElement(
-              "h3",
+          console.log("D", d.attributes);
+          if (self.parseAssetType(d.attributes.asset._url) === "video") {
+            return React.createElement(
+              "li",
               null,
-              "CHECKPOINT ",
-              d.attributes.checkpoint
-            ),
-            React.createElement("video", { src: d.attributes.asset._url, controls: true })
-          );
+              React.createElement(
+                "h3",
+                null,
+                "CHECKPOINT ",
+                d.attributes.checkpoint
+              ),
+              React.createElement("video", { src: d.attributes.asset._url, controls: true })
+            );
+          } else if (self.parseAssetType(d.attributes.asset._url) === "image") {
+            return React.createElement(
+              "li",
+              null,
+              React.createElement(
+                "h3",
+                null,
+                "CHECKPOINT ",
+                d.attributes.checkpoint
+              ),
+              React.createElement("img", { src: d.attributes.asset._url })
+            );
+          } else {
+            return React.createElement(
+              "li",
+              null,
+              React.createElement(
+                "h3",
+                null,
+                "CHECKPOINT ",
+                d.attributes.checkpoint
+              ),
+              React.createElement(
+                "h3",
+                null,
+                "Unsupported File Type"
+              )
+            );
+          }
         })
       );
     } else {
@@ -452,8 +499,6 @@ var User = React.createClass({
 });
 
 module.exports = User;
-
-//come back to this
 
 
 },{"react":160}],7:[function(require,module,exports){

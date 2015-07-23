@@ -2,9 +2,24 @@ import React from 'react';
 
 var User = React.createClass({
   parseAssetType: function(assetString) {
-    //come back to this
+    var fileExtension = assetString.split('.').pop();
+    switch (fileExtension) {
+      case "MOV":
+        return 'video';
+        break;
+      case "jpg":
+      case "png":
+      case "gif":
+        return 'image';
+        break;
+      default:
+        console.log("unsupported file type", fileExtension);
+        return 'unsupported';
+    }
   },
+  
   render: function () {
+    var self = this;
     console.log("in user render");
     console.log(this.props);
 
@@ -15,12 +30,14 @@ var User = React.createClass({
             User ID: {this.props.user.id} 
           </h1>
           {this.props.user.assets.map(function(d){
-
-
-
-
-
-            return <li><h3>CHECKPOINT {d.attributes.checkpoint}</h3><video src={d.attributes.asset._url} controls></video></li>;
+            console.log("D", d.attributes);
+            if (self.parseAssetType(d.attributes.asset._url) === 'video') {
+              return <li><h3>CHECKPOINT {d.attributes.checkpoint}</h3><video src={d.attributes.asset._url} controls></video></li>;
+            } else if (self.parseAssetType(d.attributes.asset._url) === 'image') {
+              return <li><h3>CHECKPOINT {d.attributes.checkpoint}</h3><img src={d.attributes.asset._url}/></li>;
+            } else {
+              return <li><h3>CHECKPOINT {d.attributes.checkpoint}</h3><h3>Unsupported File Type</h3></li>;
+            }
           })}
         </div>
       )
