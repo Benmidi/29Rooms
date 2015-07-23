@@ -675,7 +675,7 @@ function handleFetchUserName() {
   _.extend(_user, { loading: true });
 
   query = new Parse.Query("Users");
-  query.equalTo("account_id", user_id).descending("createdAt");
+  query.equalTo("account_id", user_id).limit(1);
 
   query.find({
     success: function success(results) {
