@@ -1,48 +1,52 @@
 import React from 'react';
-import Hello from './components/hello.jsx';
-import { Parse } from 'parse';
+import User from './components/User.jsx';
+import HomePage from './components/HomePage.jsx';
+import UserStore from './stores/UserStore';
+import AppActions from './actions/AppActions';
 
-Parse.initialize(
-  'XR6QEwB3uUOhxCCT1jGigHQc9YO1vQHceRjrwAgN', 
-  'oGY2hPgTLoJJACeuV3CJTihOMDlmE04UCUqq0ABb'
-);
 
 var App = React.createClass({
+  parsePathname: function() {
+    return document.location.pathname.split('/').pop();
+  },
+
   getInitialState: function() {
     return {
-      assets: [],
+      user: UserStore.get(),
     };
   },
-  componentWillMount: function () {
-    var self = this;
-    var gifList = Parse.Object.extend("Assets");
-    var query = new Parse.Query(gifList);
-    query.equalTo("account_id", document.location.pathname.split('/').pop());
 
-    query.find({
-      success: function(results) {
-        var assets = [];
-        console.log("Successfully retrieved ", results.length, " images.");
-        for (var i = 0; i < results.length; i++) {
-          var object = results[i];
-          console.log(object.id, ' - ', object.get('asset'));
-          assets.push(object.get('asset'));
-        }
-        self.setState({assets: assets});
-      },
-      error: function(error) {
-        console.log("Error: ", error.code, " " + error.message);
-      }
+  componentWillMount: function() {
+    AppActions.fetchUserAssets();
+    AppActions.fetchUserName();
+  },
+
+  componentDidMount: function() {
+    UserStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount: function() {
+    UserStore.removeChangeListener(this._onChange);
+  },
+
+  _onChange: function() {
+    this.setState({
+      user: UserStore.get(),
     });
   },
 
-  handleClick: function () {
-    window.alert('clicked');
-  },
-
   render: function () {
+    var component;
+
+    if (this.state.user.loading) {
+      component = <div>Loading</div>;
+    } else if (this.parsePathname() === '') {
+      component = <HomePage {...this.state}></HomePage>;
+    } else {
+      component = <User {...this.state}></User>;
+    }
     return (
-      <Hello onClick={this.handleClick} {...this.state}></Hello>
+      <div>{component}</div>
     );
   }
 });

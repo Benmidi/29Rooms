@@ -61,28 +61,25 @@ var Name = React.createClass({
     };
   },
 
-  _watchName: function(text){
+  _watchName: function(text) {
     this.setState({
       name: text
-    })
+    });
   },
 
-  _submit: function(){
-    //TODO: check if name is acceptable
-    //TODO: if so, send all user data at once to Parse
-    RegistrationActions.userSubmitName(this.state.name);
+  _submit: function() {
+    RegistrationActions.saveUser(this.state.name);
   },
 
   render: function() {
     return(
       <View style={styles.container}>
         <Text style={styles.prompt}>Please enter your name:</Text>
-        <TextInput onChangeText={this._watchName} style={styles.name} />
+        <TextInput onChangeText={this._watchName} autoCorrect={false} style={styles.name} />
         
         <TouchableHighlight onPress={this._submit} style={styles.submitButton}>
           <Text style={styles.submitText}>Submit</Text>
         </TouchableHighlight>
-
       </View>
     );
   }

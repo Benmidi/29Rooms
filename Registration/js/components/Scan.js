@@ -54,20 +54,30 @@ var styles = StyleSheet.create({
 
 var Scan = React.createClass({
 
-	_onBarCodeRead: function(e){
+	getInitialState: function() {
+    return {
+      ready: true,
+    };
+  },
+
+	_onBarCodeRead: function(e) {
 		var userId;
 
-		if(e.type === 'org.iso.QRCode'){
+		if(e.type === 'org.iso.QRCode') {
 			userId = e.data.split("/").pop();
-			//TODO: check if userId already exists
+			
+			//Check if userId already exists
+			RegistrationActions.checkUserId(userId);
+
+			//Set the ID either way & decide what to do with it in App
 			RegistrationActions.userCreateAccount(userId);
 		} else {
-			console.log('ERROR');
+			_user.error = 'Could not read QRCode';
+			console.log('ERROR: Could not read QRCode');
 		}
 	},
 
   render: function() {
-
     return(
       <View>
       	<Camera 
