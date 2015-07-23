@@ -3556,6 +3556,32 @@ var React = _interopRequire(require("react"));
 
 var StyleSheet = require("react-style");
 
+var styles = StyleSheet.create({
+  checkpoint: {
+    fontSize: 30,
+    color: "#363380",
+    alignSelf: "stretch",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center" },
+  identifier: {
+    color: "violet",
+    alignSelf: "stretch",
+    alignItems: "center",
+    justifyContent: "center",
+    fontFamily: "helvetica",
+    textAlign: "center",
+    fontSize: 40 },
+  listStyle: {
+    textAlign: "center",
+    alignSelf: "center" },
+  asset: {
+    maxWidth: 350,
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "stretch" }
+});
+
 var User = React.createClass({
   displayName: "User",
 
@@ -3580,7 +3606,6 @@ var User = React.createClass({
     var self = this,
         identifier;
     console.log("in user render");
-    console.log(this.props);
     identifier = this.props.user.name ? this.props.user.name : "User " + this.props.user.id;
 
     if (this.props.user.assets.length > 0) {
@@ -3589,7 +3614,7 @@ var User = React.createClass({
         null,
         React.createElement(
           "h1",
-          null,
+          { style: styles.identifier },
           "Hey, ",
           identifier,
           "! Check out your videos!"
@@ -3597,35 +3622,35 @@ var User = React.createClass({
         this.props.user.assets.map(function (d) {
           if (self.parseAssetType(d.attributes.asset._url) === "video") {
             return React.createElement(
-              "li",
-              null,
+              "div",
+              { style: styles.listStyle },
               React.createElement(
-                "h3",
-                null,
+                "span",
+                { style: styles.checkpoint },
                 "CHECKPOINT ",
                 d.attributes.checkpoint
               ),
-              React.createElement("video", { src: d.attributes.asset._url, controls: true })
+              React.createElement("video", { src: d.attributes.asset._url, style: styles.asset, controls: true })
             );
           } else if (self.parseAssetType(d.attributes.asset._url) === "image") {
             return React.createElement(
-              "li",
-              null,
+              "div",
+              { style: styles.listStyle },
               React.createElement(
-                "h3",
-                null,
+                "span",
+                { style: styles.checkpoint },
                 "CHECKPOINT ",
                 d.attributes.checkpoint
               ),
-              React.createElement("img", { src: d.attributes.asset._url })
+              React.createElement("img", { src: d.attributes.asset._url, style: styles.asset })
             );
           } else {
             return React.createElement(
-              "li",
-              null,
+              "div",
+              { style: styles.listStyle },
               React.createElement(
-                "h3",
-                null,
+                "span",
+                { style: styles.checkpoint },
                 "CHECKPOINT ",
                 d.attributes.checkpoint
               ),

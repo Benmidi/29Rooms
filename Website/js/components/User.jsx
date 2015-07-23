@@ -1,6 +1,36 @@
 import React from 'react';
 var StyleSheet = require('react-style');
 
+var styles = StyleSheet.create({
+  checkpoint: {
+    fontSize: 30,
+    color: '#363380',
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
+  identifier: {
+    color: 'violet',
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontFamily: "helvetica",
+    textAlign: 'center',
+    fontSize: 40,
+  },
+  listStyle: {
+   textAlign: 'center',
+   alignSelf: 'center',
+  },
+  asset: {
+    maxWidth: 350,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'stretch',
+  }
+});
+
 var User = React.createClass({
   parseAssetType: function(assetString) {
     var fileExtension = assetString.split('.').pop();
@@ -23,22 +53,21 @@ var User = React.createClass({
     var self = this,
         identifier;
     console.log("in user render");
-    console.log(this.props);
     identifier = this.props.user.name? this.props.user.name : ("User " + this.props.user.id);
 
     if(this.props.user.assets.length > 0) {
       var component = (
         <div>
-          <h1>
+          <h1 style={styles.identifier}>
             Hey, {identifier}! Check out your videos!
           </h1>
           {this.props.user.assets.map(function(d){
             if (self.parseAssetType(d.attributes.asset._url) === 'video') {
-              return <li><h3>CHECKPOINT {d.attributes.checkpoint}</h3><video src={d.attributes.asset._url} controls></video></li>;
+              return <div style={styles.listStyle}><span style={styles.checkpoint}>CHECKPOINT {d.attributes.checkpoint}</span><video src={d.attributes.asset._url} style={styles.asset} controls></video></div>;
             } else if (self.parseAssetType(d.attributes.asset._url) === 'image') {
-              return <li><h3>CHECKPOINT {d.attributes.checkpoint}</h3><img src={d.attributes.asset._url}/></li>;
+              return <div style={styles.listStyle}><span style={styles.checkpoint}>CHECKPOINT {d.attributes.checkpoint}</span><img src={d.attributes.asset._url} style={styles.asset}/></div>;
             } else {
-              return <li><h3>CHECKPOINT {d.attributes.checkpoint}</h3><h3>Unsupported File Type</h3></li>;
+              return <div style={styles.listStyle}><span style={styles.checkpoint}>CHECKPOINT {d.attributes.checkpoint}</span><h3>Unsupported File Type</h3></div>;
             }
           })}
         </div>
