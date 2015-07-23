@@ -1,4 +1,5 @@
 import React from 'react';
+var StyleSheet = require('react-style');
 
 var User = React.createClass({
   parseAssetType: function(assetString) {
