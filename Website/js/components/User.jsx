@@ -17,7 +17,7 @@ var User = React.createClass({
         return 'unsupported';
     }
   },
-  
+
   render: function () {
     var self = this;
     console.log("in user render");
@@ -30,7 +30,6 @@ var User = React.createClass({
             User ID: {this.props.user.id} 
           </h1>
           {this.props.user.assets.map(function(d){
-            console.log("D", d.attributes);
             if (self.parseAssetType(d.attributes.asset._url) === 'video') {
               return <li><h3>CHECKPOINT {d.attributes.checkpoint}</h3><video src={d.attributes.asset._url} controls></video></li>;
             } else if (self.parseAssetType(d.attributes.asset._url) === 'image') {

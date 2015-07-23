@@ -64,12 +64,12 @@ function handleFetchUserAssets(){
 
   gifList = Parse.Object.extend("Assets");
   query = new Parse.Query(gifList);
-  query.equalTo("account_id", user_id).ascending('createdAt');
+  query.equalTo("account_id", user_id).ascending('checkpoint').ascending('createdAt');
 
   query.find({
     success: function(results) {
       var assets = [];
-      console.log("Successfully retrieved ", results.length, " images.");
+      console.log("Successfully retrieved ", results.length, " assets.");
       for (var i = 0; i < results.length; i++) {
         var object = results[i];
         console.log(object.id, ' - ', object.get('asset'));
