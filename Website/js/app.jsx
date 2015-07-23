@@ -18,6 +18,7 @@ var App = React.createClass({
 
   componentWillMount: function() {
     AppActions.fetchUserAssets();
+    AppActions.fetchUserName();
   },
 
   componentDidMount: function() {

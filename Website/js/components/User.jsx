@@ -19,15 +19,17 @@ var User = React.createClass({
   },
 
   render: function () {
-    var self = this;
+    var self = this,
+        identifier;
     console.log("in user render");
     console.log(this.props);
+    identifier = this.props.user.name? this.props.user.name : ("User " + this.props.user.id);
 
     if(this.props.user.assets.length > 0) {
       var component = (
         <div>
           <h1>
-            User ID: {this.props.user.id} 
+            Hey, {identifier}! Check out your videos!
           </h1>
           {this.props.user.assets.map(function(d){
             if (self.parseAssetType(d.attributes.asset._url) === 'video') {

@@ -327,6 +327,10 @@ var AppActions = {
   fetchUserAssets: function fetchUserAssets(userId) {
     AppDispatcher.dispatch({
       actionType: AppConstants.ActionTypes.FETCH_USER_ASSETS });
+  },
+  fetchUserName: function fetchUserName(userId) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.ActionTypes.FETCH_USER_NAME });
   } };
 
 module.exports = AppActions;
@@ -361,6 +365,7 @@ var App = React.createClass({
 
   componentWillMount: function componentWillMount() {
     AppActions.fetchUserAssets();
+    AppActions.fetchUserName();
   },
 
   componentDidMount: function componentDidMount() {
@@ -455,9 +460,11 @@ var User = React.createClass({
   },
 
   render: function render() {
-    var self = this;
+    var self = this,
+        identifier;
     console.log("in user render");
     console.log(this.props);
+    identifier = this.props.user.name ? this.props.user.name : "User " + this.props.user.id;
 
     if (this.props.user.assets.length > 0) {
       var component = React.createElement(
@@ -466,8 +473,9 @@ var User = React.createClass({
         React.createElement(
           "h1",
           null,
-          "User ID: ",
-          this.props.user.id
+          "Hey, ",
+          identifier,
+          "! Check out your videos!"
         ),
         this.props.user.assets.map(function (d) {
           if (self.parseAssetType(d.attributes.asset._url) === "video") {
@@ -542,7 +550,8 @@ var keyMirror = require("keymirror");
 module.exports = {
 
   ActionTypes: keyMirror({
-    FETCH_USER_ASSETS: null }) };
+    FETCH_USER_ASSETS: null,
+    FETCH_USER_NAME: null }) };
 
 
 },{"keymirror":13}],9:[function(require,module,exports){
@@ -568,7 +577,7 @@ var CHANGE_EVENT = "change";
 
 var user_id = parsePathname();
 
-var _user = { id: user_id, assets: [], loading: true };
+var _user = { id: user_id, name: name, assets: [], loading: true };
 
 var UserStore = _.extend({}, EventEmitter.prototype, {
   /**
@@ -604,6 +613,10 @@ AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.ActionTypes.FETCH_USER_ASSETS:
       handleFetchUserAssets();
+      UserStore.emitChange();
+      break;
+    case AppConstants.ActionTypes.FETCH_USER_NAME:
+      handleFetchUserName();
       UserStore.emitChange();
       break;
 
@@ -648,6 +661,41 @@ function handleFetchUserAssets() {
     })(function (error) {
       console.log("Error: ", error.code, " " + error.message);
       _.extend(_user, { error: "could not find assets", loading: false });
+      UserStore.emitChange();
+    })
+  });
+}
+
+function handleFetchUserName() {
+  console.log("fetching user name");
+  var fetchedName, query;
+
+  initParse();
+
+  _.extend(_user, { loading: true });
+
+  query = new Parse.Query("Users");
+  query.equalTo("account_id", user_id).descending("createdAt");
+
+  query.find({
+    success: function success(results) {
+      fetchedName = results[0].attributes.Name;
+      _.extend(_user, { name: fetchedName, loading: false });
+      UserStore.emitChange();
+    },
+    error: (function (_error) {
+      var _errorWrapper = function error(_x) {
+        return _error.apply(this, arguments);
+      };
+
+      _errorWrapper.toString = function () {
+        return _error.toString();
+      };
+
+      return _errorWrapper;
+    })(function (error) {
+      console.log("Error: ", error.code, " " + error.message);
+      _.extend(_user, { error: "could not fetch name", loading: false });
       UserStore.emitChange();
     })
   });

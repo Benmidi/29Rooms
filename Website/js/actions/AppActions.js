@@ -9,6 +9,11 @@ var AppActions = {
       actionType: AppConstants.ActionTypes.FETCH_USER_ASSETS,
     });
   },
+  fetchUserName: function(userId){
+    AppDispatcher.dispatch({
+      actionType: AppConstants.ActionTypes.FETCH_USER_NAME,
+    });
+  },
 };
 
 module.exports = AppActions;

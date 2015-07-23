@@ -10,7 +10,7 @@ var CHANGE_EVENT = 'change';
 
 var user_id = parsePathname();
 
-var _user = { id: user_id, assets: [], loading: true};
+var _user = { id: user_id, name: name, assets: [], loading: true};
 
 var UserStore = _.extend({}, EventEmitter.prototype, {
   /**
@@ -48,6 +48,10 @@ AppDispatcher.register(function(action) {
       handleFetchUserAssets();
       UserStore.emitChange();
       break;
+    case AppConstants.ActionTypes.FETCH_USER_NAME:
+      handleFetchUserName();
+      UserStore.emitChange();
+      break;
 
     default:
       // no op
@@ -81,6 +85,32 @@ function handleFetchUserAssets(){
     error: function(error) {
       console.log("Error: ", error.code, " " + error.message);
       _.extend(_user, {error: "could not find assets", loading: false});
+      UserStore.emitChange();
+    }
+  });
+}
+
+function handleFetchUserName() {
+  console.log("fetching user name");
+  var fetchedName,
+      query;
+
+  initParse();
+
+  _.extend(_user, {loading: true});
+
+  query = new Parse.Query("Users");
+  query.equalTo("account_id", user_id).descending('createdAt');
+
+    query.find({
+    success: function(results) {
+      fetchedName = results[0].attributes.Name;
+      _.extend(_user, {name: fetchedName, loading: false});
+      UserStore.emitChange();
+    },
+    error: function(error) {
+      console.log("Error: ", error.code, " " + error.message);
+      _.extend(_user, {error: "could not fetch name", loading: false});
       UserStore.emitChange();
     }
   });
