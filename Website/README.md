@@ -11,6 +11,17 @@ $ npm install
 $ grunt start
 ```
 
+If you get an error like
+```
+Error: Cannot find module 'react/lib/ReactUpdateQueue' from '/wherever/29Rooms/Website/node_modules/react-style/lib'
+```
+
+then please run
+
+```bash
+npm install react-style -g
+```
+
 ## Browserify plugins
 
 * [babelify](https://github.com/babel/babelify) - ES6 to ES5 transform function.
