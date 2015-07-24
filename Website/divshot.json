@@ -1,0 +1,9 @@
+{
+  "name": "roomsof29",
+  "root": "build/",
+  "clean_urls": true,
+  "error_page": "n",
+  "routes": {
+    "/*": "index.html"
+  }
+}
