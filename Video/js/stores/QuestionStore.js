@@ -7,7 +7,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher'),
 
 var CHANGE_EVENT = 'change';
 
-var _question = '';
+var _question = 'What\'s it like to be in a room full of lip stick?';
 
 /**
  * handleUpdateSign()

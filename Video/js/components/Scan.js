@@ -48,7 +48,10 @@ var Scan = React.createClass({
 
   record: function() {
     console.log('rec');
-    this.refs.camera.capture({}, this._onCapture);
+    this.refs.camera.capture({
+      mode: Camera.constants.CaptureMode.video,
+      target: Camera.constants.CaptureTarget.disk,
+    },this._onCapture);
     setTimeout(function() {
       this.refs.camera.stopCapture();
     }.bind(this), 5000);

@@ -15,6 +15,7 @@ var _user = {};
  */
 function handleFetchUser(user) {
   console.log('user received: ', user);
+  _user.id = user;
 }
 
 var UserStore = _.extend({}, EventEmitter.prototype, {

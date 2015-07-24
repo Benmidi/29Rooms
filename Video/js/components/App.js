@@ -18,7 +18,7 @@ var App = React.createClass({
   getInitialState: function() {
     return {
       user: null,
-      question: 'How are you?',
+      question: QuestionStore.get(),
     };
   },
 
@@ -60,9 +60,17 @@ var App = React.createClass({
   },
 
   render: function() {
+    var component;
+
+    if (this.state.user) {
+      component = <Question {...this.state} {...this.props} />
+    } else {
+      component = <Scan {...this.state} {...this.props} />
+    }
+
     return(
       <View>
-        <Scan {...this.state} {...this.props} />
+        {component}
       </View>
     );
   }
