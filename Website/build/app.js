@@ -3589,6 +3589,7 @@ var User = React.createClass({
     var fileExtension = assetString.split(".").pop();
     switch (fileExtension) {
       case "MOV":
+      case "mp4":
         return "video";
         break;
       case "jpg":
