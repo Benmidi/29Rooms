@@ -1,53 +1,54 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * 29Rooms Video App
+ * Emily O'Brien
+ * https://github.com/Emibob
  */
 'use strict';
 
-var React = require('react-native');
+var React = require('react-native'),
+    _ = require('lodash'),
+    App = require('./js/components/App');
+
 var {
   AppRegistry,
-  StyleSheet,
-  Text,
-  View,
+  Navigator,
 } = React;
 
 var Video = React.createClass({
   render: function() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+      <Navigator
+          initialRoute={{
+            title: 'App',
+            component: App,
+          }}
+
+          configureScene={(route) => {
+            if (route.sceneConfig) {
+              return route.sceneConfig;
+            }
+            return Navigator.SceneConfigs.FloatFromBottom;
+          }}
+
+          renderScene={(route, navigator) => {
+            if (route.component) {
+              return React.createElement(route.component, { navigator: _.omit(navigator, 'route'), ...route });
+            }
+          }}
+
+          onItemRef={(ref, index, route) => {
+            route.sceneRef = ref;
+          }}
+
+          onDidFocus={(route) => {
+            if(route.sceneRef.componentDidFocus) {
+              route.sceneRef.componentDidFocus();
+            }
+          }}
+      />
     );
   }
 });
 
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
-
 AppRegistry.registerComponent('Video', () => Video);
+
